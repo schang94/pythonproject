@@ -1,0 +1,41 @@
+<td colspan="4">
+	<div class="card border-secondary mb-3">
+		<div class="card-header">수정하기</div>
+		<form action="#" name="st_modify_frm" method="post">{% csrf_token %}
+			<table class="table">
+				<colgroup>
+					<col width='30%' />
+					<col width='70%' />
+				</colgroup>
+				<tbody class="text-left">
+					<tr>
+						<td scope="row">제품번호</td>
+						<td>{{ stock_data.id }}</td>
+					</tr>
+					<tr>
+						<td scope="row">제품명</td>
+						<td><input name="st_name" value="{{ stock_data.st_name }}"></td>
+					</tr>
+					<tr>
+						<td scope="row">제품수량</td>
+						<td><input name="st_quantity" value="{{ stock_data.st_quantity }}"></td>
+					</tr>
+					<tr>
+						<td scope="row">가격</td>
+						<td><input name="st_price" value="{{ stock_data.st_price }}"></td>
+					</tr>
+					
+				</tbody>
+			</table>
+			<input type="hidden" name="id" value="{{stock_data.id}}">
+		</form>
+		<table class="table">
+			<tr class="text-center">
+				<td>
+					<button class="btn btn-secondary btn-lg" name="btn_st_modify_ok">수정</button>
+					<button class="btn btn-secondary btn-lg" name="btn_st_modify_ca">취소</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+</td>

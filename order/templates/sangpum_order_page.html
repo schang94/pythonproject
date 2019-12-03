@@ -1,0 +1,63 @@
+{% load humanize %}
+{% load mathfilters %}
+<div class="card-header bg-dark text-white">
+	<h4 class="my-0 font-weight-normal">주문하기</h4>
+</div>
+<div class="card-body" >
+	<div class="card border-secondary mb-3">
+		<table class="table">
+			<colgroup>
+				<col width='50%' />
+				<col width='25%' />
+				<col width='25%' />
+			</colgroup>
+			<thead>
+			<tr class='text-center'>
+				<th scope='col'>상품</th>
+				<th scope='col'>금액[수량]</th>
+				<th scope='col'>총금액</th>
+			</tr>
+		</thead>
+			<tbody class="text-center">
+				<tr>
+					<td scope="row"></td>
+					<td>{{ sangpum_data.st_price|intcomma }}원[{{quantity}}개]</td>
+					<td> {{ sangpum_data.st_price|mul:quantity|intcomma }}원</td>
+			</tbody>
+		</table>
+		<div class="card-header">배송정보 입력</div>
+		<form method="post">
+		<table class="table">
+			<colgroup>
+				<col width='30%' />
+				<col width='70%' />
+			</colgroup>
+			<tbody class="text-left">
+				<tr>
+					<td scope="row">배송지 선택</th>
+					<td>
+						<input type="radio" name="ship" value="basis" checked="checked"/> 기본배송지
+						<input type="radio" name="ship" value="recent" /> 최근배송지
+					</td>
+				</tr>
+				<tr>
+					<td scope="row">받는 사람</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td scope="row">연락처</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td scope="row">받는 주소</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td scope="row">받는 사람</th>
+					<td>{{ order_data.ord_cname }}</td>
+				</tr>
+			</tbody>
+		</table>
+		</form>
+	</div>
+</div>

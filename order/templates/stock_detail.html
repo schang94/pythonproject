@@ -1,0 +1,35 @@
+{% load humanize %}
+<td colspan="4">
+	<div class="card border-secondary mb-3">
+		<div class="card-header">상품 수정</div>
+		<table class="table">
+			<colgroup>
+				<col width='30%' />
+				<col width='70%' />
+			</colgroup>
+			<tbody class="text-left">
+				<tr>
+					<td scope="row">제품번호</td>
+					<td>{{ stock_data.id }}</td>
+				</tr>
+				<tr>
+					<td scope="row">제품명</td>
+					<td>{{ stock_data.st_name }}</td>
+				</tr>
+				<tr>
+					<td scope="row">제품수량</td>
+					<td>{{ stock_data.st_quantity|intcomma }}</td>
+				</tr>
+				<tr>
+					<td scope="row">가격</td>
+					<td>{{ stock_data.st_price|intcomma }}</td>
+				</tr>
+				<tr class="text-center">
+					<td colspan="2">
+						<button class="btn btn-secondary btn-lg" name="btn_st_modify" id="stock_{{stock_data.id}}">수정하기</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</td>

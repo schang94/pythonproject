@@ -1,0 +1,80 @@
+{% load humanize %}
+<div class="card-header bg-dark text-white">
+        <h4 class="my-0 font-weight-normal">상품 목록</h4>
+</div>
+<div class="card-body" >
+	<div class='text-right'>
+		<select class='col-2 custom-select custom-select-sm mb-4'
+			name='ord_state' id='ord_state'>
+			<option value='all' selected='selected'>직업선택</option>
+			<option value='0'>주문</option>
+			<option value='1'>배송</option>
+			<option value='2'>완료</option>
+		</select>
+	</div>
+	<div class='table-responsive-md' id='page_table'>
+		<table class='table table-hover'>
+			<colgroup>
+				<col width='30%' />
+				<col width='50%' />
+				<col width='20%' />
+			</colgroup>
+			<thead>
+				<tr class='text-center'>
+					<th scope='col'></th>				
+					<th scope='col'>고객명</th>
+					<th scope='col'>가격</th>
+				</tr>
+			</thead>
+			<tbody id='table_orderList'>
+				{% if sangpum_data %} {% for s in sangpum_data %}
+				<tr name="sangpums" id="sangpum_{{s.id}}">
+					<td scope='row'></td>
+					<td>{{s.st_name}}</td>
+					<td>{{s.st_price|intcomma}}</td>
+				</tr>
+				<tr id="sangpum_detail_page_{{s.id}}">
+	
+				</tr>
+				{% endfor %} {% else %}
+				<tr>
+					<td class='text-center' colspan='4' scope='row'>등록된 상품이 없습니다.</td>
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
+		<div>
+		{% if sangpum_data.has_previous %}
+			<a class="btn btn-light" href="javascript:ajaxGuset.sangpum_list('all','{{ sangpum_data.previous_page_number }}')">&laquo;</a>
+		{% else %}
+			<a class="btn btn-light disabled">&laquo;</a>
+		{% endif %}
+		{% if sangpum_data.number > 3 %}
+			<a class="btn btn-light" href="javascript:ajaxGuset.sangpum_list('all','1')"> 1 </a>
+			<a class="btn btn-light disabled">...</a>
+		{% endif %}
+		{% for p in page_range %}
+			{% if p > 0 %}
+				{% if p == sangpum_data.number %}
+					<a class="btn btn-light disabled">{{p}}</a>
+				{% elif p != sangpum_data.number %}
+					<a class="btn btn-light" href="javascript:ajaxGuset.sangpum_list('all','{{p}}')">{{p}}</a>
+				{% endif%}
+			{% endif %}
+		{% endfor %}
+		{% if sangpum_data.number < max_index|add:'-2' %}
+			<a class="btn btn-light disabled">...</a>
+			<a class="btn btn-light" href="javascript:ajaxJs.ajaxGuset.sangpum_list('all','{{max_index}}')"> {{max_index}} </a>
+		{% endif %}
+		{% if sangpum_data.has_next  %}
+			<a class="btn btn-light" href="javascript:ajaxJs.ajaxGuset.sangpum_list('all','{{ sangpum_data.next_page_number }}')">&raquo;</a>
+		{% else %}
+			<a class="btn btn-light disabled">&raquo;</a>
+		{% endif %}
+		</div>
+	</div>
+	<form action="#" name="ord_frm">
+		<input type="hidden" name="pre_sangpum_detail" id="pre_sangpum_detail" value="">
+		<input type="hidden" name="now_page" id="now_page" value="sangpum_data.number">
+	</form>
+</div>

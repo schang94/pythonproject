@@ -1,0 +1,84 @@
+{% load dict_key %}
+{% load humanize %}
+<div class="card-header bg-dark text-white">
+	<h4 class="my-0 font-weight-normal">주문 목록</h4>
+</div>
+<div class="card-body" >
+	<div class='text-right'>
+		<select class='col-2 custom-select custom-select-sm mb-4'
+			name='ord_state' id='ord_state'>
+			<option value='all' selected='selected'>직업선택</option>
+			<option value='0'>주문</option>
+			<option value='1'>배송</option>
+			<option value='2'>완료</option>
+		</select>
+	</div>
+	<div class='table-responsive-md' id='page_table'>
+		<table class='table table-hover'>
+			<colgroup>
+				<col width='10%' />
+				<col width='20%' />
+				<col width='50%' />
+				<col width='20%' />
+			</colgroup>
+			<thead>
+				<tr class='text-center'>
+					<th scope='col'>주문번호</th>
+					<th scope='col'>고객명</th>
+					<th scope='col'>상품[수량]</th>
+					<th scope='col'>주문상태</th>
+				</tr>
+			</thead>
+			<tbody id='table_orderList'>
+				{% if order_data %} {% for o in order_data %}
+				<tr name="orders" id="order_{{o.id}}">
+					<td scope='row'>{{o.id}}</td>
+					<td>{{o.ord_cname}}</td>
+					<td>{{o.ord_pid.st_name}}[{{o.ord_quantity|intcomma }}개]</td>
+					<td>{{ostate|dict_key:o.state }}</td>
+				</tr>
+				<tr id="order_detail_page_{{o.id}}">
+	
+				</tr>
+				{% endfor %} {% else %}
+				<tr>
+					<td class='text-center' colspan='4' scope='row'>주문이 없습니다.</td>
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
+		<div>
+		{% if order_data.has_previous %}
+			<a class="btn btn-light" href="javascript:ajaxJs.ajax_order_list('all','{{ order_data.previous_page_number }}')">&laquo;</a>
+		{% else %}
+			<a class="btn btn-light disabled">&laquo;</a>
+		{% endif %}
+		{% if order_data.number > 3 %}
+			<a class="btn btn-light" href="javascript:ajaxJs.ajax_order_list('all','1')"> 1 </a>
+			<a class="btn btn-light disabled">...</a>
+		{% endif %}
+		{% for p in page_range %}
+			{% if p > 0 %}
+				{% if p == order_data.number %}
+					<a class="btn btn-light disabled">{{p}}</a>
+				{% elif p != order_data.number %}
+					<a class="btn btn-light" href="javascript:ajaxJs.ajax_order_list('all','{{p}}')">{{p}}</a>
+				{% endif%}
+			{% endif %}
+		{% endfor %}
+		{% if order_data.number < max_index|add:'-2' %}
+			<a class="btn btn-light disabled">...</a>
+			<a class="btn btn-light" href="javascript:ajaxJs.ajax_order_list('all','{{max_index}}')"> {{max_index}} </a>
+		{% endif %}
+		{% if order_data.has_next  %}
+			<a class="btn btn-light" href="javascript:ajaxJs.ajax_order_list('all','{{ order_data.next_page_number }}')">&raquo;</a>
+		{% else %}
+			<a class="btn btn-light disabled">&raquo;</a>
+		{% endif %}
+		</div>
+	</div>
+	<form action="#" name="ord_frm">
+		<input type="hidden" name="pre_order_detail" id="pre_order_detail" value="">
+		<input type="hidden" name="now_page" id="now_page" value="order_data.number">
+	</form>
+</div>

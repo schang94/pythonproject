@@ -1,0 +1,7 @@
+
+{% if request.session.name %}
+<a class="p-2 text-muted" href="javascript:ajaxLogin.logout()">Logout</a>
+{% else %}
+<a class="p-2 text-muted" href="javascript:ajaxLogin.sign()">Sign up</a>
+<a class="p-2 text-muted" href="javascript:ajaxLogin.login()">Login</a>
+{% endif %}

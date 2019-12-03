@@ -1,0 +1,18 @@
+<div class="card-header bg-dark text-white">
+	<h4 class="my-0 font-weight-normal">로그인</h4>
+</div>
+<div class="card-body" >
+	<div class='table-responsive-md' id='page_table'>
+		<form name="st_insert_frm" method="post">{% csrf_token %}
+			<div class="form-group text-left">
+		    	<label for="cmail">Email address</label>
+		    	<input type="email" class="form-control" id="cmail" name="cmail" aria-describedby="emailHelp">
+		  	</div>
+		  	<div class="form-group text-left">
+		    	<label for="cpasswd">Password</label>
+		    	<input type="password" class="form-control" id="cpasswd" name="cpasswd">
+		  	</div>
+		</form>
+	  	<button class="btn btn-secondary btn-lg text-center" name="btn_login_ok" id="btn_login_ok">로그인</button>
+	</div>
+</div>

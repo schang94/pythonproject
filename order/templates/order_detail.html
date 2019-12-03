@@ -1,0 +1,58 @@
+<td colspan="4" >
+	<div class="card border-secondary mb-3">
+		<table class="table">
+			<colgroup>
+				<col width='30%' />
+				<col width='70%' />
+			</colgroup>
+			<tbody class="text-left">
+				<tr>
+					<td scope="row">주문 날짜</td>
+					<td>{{ order_data.ord_date|date:"Y-m-d  H시 m분 s초" }}</td>
+				</tr>
+				<tr>
+					<td scope="row">주문 번호</td>
+					<td>{{ order_data.id }}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="card-header">배송정보</div>
+		<table class="table">
+			<colgroup>
+				<col width='30%' />
+				<col width='70%' />
+			</colgroup>
+			<tbody class="text-left">
+				<tr>
+					<td scope="row">받는 사람</td>
+					<td>{{ order_data.ord_cname }}</td>
+				</tr>
+				<tr>
+					<td scope="row">연락처</td>
+					<td>{{ order_data.ord_phone }}</td>
+				</tr>
+				<tr>
+					<td scope="row">받는 주소</td>
+					<td>{{ order_data.ord_addr }}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="card-header">주문정보</div>
+		<table class="table">
+			<colgroup>
+				<col width='30%' />
+				<col width='70%' />
+			</colgroup>
+			<tbody class="text-left">
+				<tr>
+					<td scope="row">주문 상품</td>
+					<td>{{ order_data.ord_pid.st_name }}</td>
+				</tr>
+				<tr>
+					<td scope="row">수량</td>
+					<td>{{ order_data.ord_quantity }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</td>

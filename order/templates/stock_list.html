@@ -1,0 +1,79 @@
+{% load humanize %}
+<div class="card-header bg-dark text-white">
+	<h4 class="my-0 font-weight-normal">재고 목록</h4>
+</div>
+<div class="card-body" >
+	<div class='table-responsive-md' id='page_table'>
+		<table class='table table-hover'>
+			<colgroup>
+				<col width='10%' />
+				<col width='50%' />
+				<col width='20%' />
+				<col width='20%' />
+			</colgroup>
+			<thead>
+				<tr class='text-center'>
+					<th scope='col'>상품번호</th>
+					<th scope='col'>상품명</th>
+					<th scope='col'>수량</th>
+					<th scope='col'>가격</th>
+				</tr>
+			</thead>
+			<tbody id='table_orderList'>
+				{% if stock_data %}
+					{% for s in stock_data %}
+					<tr name="stocks" id="stock_{{s.id}}">
+						<td scope='row'>{{s.id}}</td>
+						<td>{{s.st_name}}</td>
+						<td>{{s.st_quantity|intcomma}}개</td>
+						<td>{{s.st_price|intcomma }}</td>
+					</tr>
+					<tr id="stock_detail_page_{{s.id}}">
+		
+					</tr>
+					{% endfor %}
+				{% else %}
+				<tr>
+					<td class='text-center' colspan='4' scope='row'>등록된 상품이 없습니다.</td>
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
+		<div>
+		{% if stock_data.has_previous %}
+			<a class="btn btn-light" href="javascript:ajaxJs.ajax_stock_list('{{ stock_data.previous_page_number }}')">&laquo;</a>
+		{% else %}
+			<a class="btn btn-light disabled">&laquo;</a>
+		{% endif %}
+		{% if stock_data.number > 3 %}
+			<a class="btn btn-light" href="javascript:ajaxJs.ajax_stock_list('1')"> 1 </a>
+			<a class="btn btn-light disabled">...</a>
+		{% endif %}
+		{% for p in page_range %}
+			{% if p > 0 %}
+				{% if p == stock_data.number %}
+					<a class="btn btn-light disabled">{{p}}</a>
+				{% elif p != stock_data.number %}
+					<a class="btn btn-light" href="javascript:ajaxJs.ajax_stock_list('{{p}}')">{{p}}</a>
+				{% endif%}
+			{% endif %}
+		{% endfor %}
+		{% if stock_data.number < max_index|add:'-2' %}
+			<a class="btn btn-light disabled">...</a>
+			<a class="btn btn-light" href="javascript:ajaxJs.ajax_stock_list('{{max_index}}')"> {{max_index}} </a>
+		{% endif %}
+		{% if stock_data.has_next  %}
+			<a class="btn btn-light" href="javascript:ajaxJs.ajax_stock_list('{{ stock_data.next_page_number }}')">&raquo;</a>
+		{% else %}
+			<a class="btn btn-light disabled">&raquo;</a>
+		{% endif %}
+		</div>
+		<div class="text-right">
+			<a href="javascript:ajaxJs.ajax_stock_insert_page()" class="btn btn-secondary btn-lg">추가</a>
+		</div>
+	</div>
+	<form action="#" name="st_frm">
+		<input type="hidden" name="pre_stock_detail" id="pre_stock_detail" value="">
+		<input type="hidden" name="now_page" id="now_page" value="{{stock_data.number}}">
+	</form>
+</div>

@@ -1,0 +1,37 @@
+<div class="card-header bg-dark text-white">
+	<h4 class="my-0 font-weight-normal">재고 추가</h4>
+</div>
+<div class="card-body" >
+	<div class='table-responsive-md' id='page_table'>
+		<form name="st_insert_frm">{% csrf_token %}
+			<table class='table table-hover'>
+				<colgroup>
+					<col width='30%' />
+					<col width='70%' />
+				</colgroup>
+				<tbody class="text-left">
+					<tr>
+						<td scope="row">제품명</td>
+						<td><input name="st_name"></td>
+					</tr>
+					<tr>
+						<td scope="row">제품수량</td>
+						<td><input name="st_quantity"></td>
+					</tr>
+					<tr>
+						<td scope="row">가격</td>
+						<td><input name="st_price"></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<table class="table">
+			<tr class="text-center">
+				<td>
+					<button class="btn btn-secondary btn-lg" name="btn_st_insert_ok">추가</button>
+					<a href="javascript:ajaxJs.ajax_stock_list('1')" class="btn btn-secondary btn-lg">취소</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
