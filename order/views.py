@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from order.models import Order, Stock, Customer
+from order.models import Order, Stock, Customer, CusAddr
 from django.http.response import HttpResponse, HttpResponseRedirect
 import json
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.urls.base import reverse
+from datetime import datetime
 
 # Create your views here.
 def MainFunc(request):
@@ -40,7 +41,7 @@ def LoginOkFunc(request):
 
     try:
         data = Customer.objects.get(cus_mail = mail[0], cus_passwd = passwd[0])
-        request.session['name'] = data.cus_name
+        request.session['name'] = data.cus_mail
         request.session['authority'] = data.cus_authority
         data = {
             "login_chk" : 'True',
@@ -104,18 +105,69 @@ def SangpumDetail(request):
     return render(request, 'sangpum_detail.html', {"sangpum_data" : sdata})
 
 def SangpumOrder(request):
-    num = request.POST['msg']
-    print("뷰 접근 성공")
+    num = request.POST['num']
+    id = request.POST['id']
+    
     try:
         request.session['name']
-        sdata = Stock.objects.get(id = num)
-        print('0')
-        return render(request, 'sangpum_order_page.html', {"sangpum_data" : sdata, "quantity":num})
+        sdata = Stock.objects.get(id = id)
+        cdata = Customer.objects.get(cus_mail = request.session['name'])
+        return render(request, 'sangpum_order_page.html', {"sangpum_data" : sdata, "cus_data": cdata,"quantity":num})
     except:
-        print('1')
         return render(request, 'login.html')
         
+def CusAddrFunc(request):
+    radio = request.POST['radio']
+    
+    try:
+        if radio == 'basic':
+            addr = Customer.objects.get(cus_mail = request.session['name'])
+            data = {
+                "ord_cname" : addr.cus_name,
+                "ord_addr" : addr.cus_addr,
+                "ord_phone" : addr.cus_phone,
+            }
+        elif radio == 'recent':
+            addr = CusAddr.objects.filter(ca_mail = request.session['name']).order_by('-id')[0]
+            data = {
+                "ord_cname" : addr.ca_name,
+                "ord_addr" : addr.ca_addr,
+                "ord_phone" : addr.ca_phone,
+            }
+    except:
+        data = {
+            "ord_cname" : "",
+            "ord_addr" : "",
+            "ord_phone" : "",
+        }
+    
+    return HttpResponse(json.dumps(data), content_type="application/json")
 
+def SangpumOrderOkFunc(request):
+    Order(
+        ord_cname = request.POST['name'],
+        ord_addr = request.POST['addr'],
+        ord_phone = request.POST['phone'],
+        ord_quantity = request.POST['q'],
+        state = 0,
+        ord_date = datetime.now(),
+        ord_cid = Customer.objects.get(cus_mail = request.session['name']),
+        ord_pid = Stock.objects.get(id = request.POST['pid'])
+        ).save()
+        
+    CusAddr(
+        ca_name = request.POST['name'],
+        ca_addr = request.POST['addr'],
+        ca_phone =request.POST['phone'],
+        ca_mail = Customer.objects.get(cus_mail = request.session['name'])
+        ).save()
+    
+    sdata = Stock.objects.get(id = request.POST['pid'])
+    sdata.st_quantity -= int(request.POST['q'])
+    sdata.save()
+    data = {"ok":True}
+    return HttpResponse(json.dumps(data), content_type="application/json")
+    
 def OrderList(request):
     state = request.GET['msg']
     

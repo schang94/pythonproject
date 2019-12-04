@@ -13,11 +13,11 @@ class StockAdmin(admin.ModelAdmin):
 admin.site.register(Stock, StockAdmin)
 
 class CusAddrAdmin(admin.ModelAdmin):
-    list_display = ('id', 'ca_no', 'ca_name', 'ca_addr', 'ca_phone', 'ca_mail')
+    list_display = ('ca_mail', 'ca_name', 'ca_addr', 'ca_phone')
 
 admin.site.register(CusAddr, CusAddrAdmin)
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'ord_cid', 'ord_pid', 'ord_cname', 'ord_addr', 'ord_phone', 'ord_mail', 'ord_quantity', 'state', 'ord_date')
+    list_display = ('id', 'ord_cid', 'ord_pid', 'ord_cname', 'ord_addr', 'ord_phone', 'ord_quantity', 'state', 'ord_date')
 
 admin.site.register(Order, OrderAdmin)

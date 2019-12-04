@@ -76,4 +76,24 @@ $(document).ready(function(){
 		var price = $("form[name=st_insert_frm] input[name=st_price]").val();
 		ajaxJs.ajax_stock_insertOk(name, quantity, price);
 	});
+	
+	$(document).on("change","input[name='op_ship']",function(){
+		var radio = this.value;
+		ajaxGuset.order_cus_addr(radio);
+	});
+	$(document).on("change","input[id='sd_quantity']",function(){
+		var price = $("#sd_quantity").val() * $("#sd_price").val();
+		price = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		$("#sd_total").html("총 상품금액(수량) : " + price +"원(" + $("#sd_quantity").val() +"개)");
+		$("#sd_submit").prop('href', "javascript:ajaxGuset.sangpum_order_page('" + $("#sd_id").val() +"', '" + $("#sd_quantity").val() + "')")
+	});
+	
+	$(document).on("click","input[id='sop_submit']",function(){
+		var name = $("#ord_cname").val();
+		var phone = $("#ord_phone").val();
+		var addr = $("#ord_addr").val();
+		var q = $("#sop_quantity").val();
+		var pid = $("#sop_pid").val();
+		ajaxGuset.sangpum_orderOk(name, phone, addr, q, pid);
+	});
 });

@@ -18,11 +18,10 @@ class Stock(models.Model):
         return self.st_name
 
 class CusAddr(models.Model):
-    ca_no = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    ca_mail = models.ForeignKey(Customer, on_delete=models.CASCADE)
     ca_name = models.CharField(max_length = 20)
     ca_addr = models.CharField(max_length = 50)
     ca_phone = models.CharField(max_length = 20)
-    ca_mail = models.CharField(max_length = 20)
     
 class Order(models.Model):
     ord_cid = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -30,7 +29,6 @@ class Order(models.Model):
     ord_cname = models.CharField(max_length = 20)
     ord_addr = models.CharField(max_length = 50)
     ord_phone = models.CharField(max_length = 20)
-    ord_mail = models.CharField(max_length = 20)
     ord_quantity = models.IntegerField()
     state = models.IntegerField()
     ord_date = models.DateTimeField()

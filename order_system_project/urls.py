@@ -28,6 +28,8 @@ urlpatterns = [
     path('login', views.LoginFunc),
     path('loginok', views.LoginOkFunc),
     path('logout', views.LogoutFunc),
+    path('cusaddr', views.CusAddrFunc),
+    path('orderok', views.SangpumOrderOkFunc),
     path('sangpum', views.SangpumFunc, name='sanpum_list'),
     path('sangpumdetail', views.SangpumDetail, name='sangpum_detail'),
     path('sangpumorder', views.SangpumOrder, name='sangpum_order_page'),

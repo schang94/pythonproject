@@ -7,7 +7,6 @@ const ajaxLogin = {
 			success : function(html){
 				ajaxLogin.logindiv();
 				ajaxLogin.loginnav();
-				$("#card_title").html("홈");
 				$("#content_page").html("<h2>환영합니다.</h2>");
 			},
 			error : function() {
@@ -20,7 +19,6 @@ const ajaxLogin = {
 			type : 'get',
 			dataType : 'html',
 			success : function(html){	
-				$("#card_title").html("회원가입");
 				$("#content_page").html(html);
 			},
 			error : function() {
@@ -41,7 +39,6 @@ const ajaxLogin = {
 			},
 			dataType : 'html',
 			success : function(html){
-				$("#card_title").html("홈");
 				$("#content_page").html("<h2>회원 가입을 성공했습니다.</h2>");
 			},
 			error : function() {
@@ -54,7 +51,6 @@ const ajaxLogin = {
 			type : 'get',
 			dataType : 'html',
 			success : function(html){	
-				$("#card_title").html("로그인");
 				$("#content_page").html(html);
 			},
 			error : function() {
@@ -101,10 +97,8 @@ const ajaxLogin = {
 						ajaxLogin.loginnav();
 					}
 					ajaxLogin.logindiv();
-					$("#card_title").html("홈");
 					$("#content_page").html("<h2>로그인을 성공했습니다.</h2>");
 				}else if(json['login_chk'] == 'False'){
-					$("#card_title").html("홈");
 					$("#content_page").html("<h2>로그인을 실패했습니다.</h2>");
 				}
 				
@@ -121,7 +115,6 @@ const ajaxLogin = {
 			success : function(html){
 				ajaxLogin.logindiv();
 				ajaxLogin.loginnav();
-				$("#card_title").html("홈");
 				$("#content_page").html("<h2>로그아웃 되었습니다.</h2>");
 			},
 			error : function() {
@@ -141,7 +134,6 @@ const ajaxGuset = {
 				},
 			dataType : 'html',
 			success : function(html){	
-				$("#card_title").html("상품 목록");
 				$("#content_page").html(html);
 			},
 			error : function() {
@@ -155,28 +147,64 @@ const ajaxGuset = {
 			data : {'msg' : num},
 			dataType : 'html',
 			success : function(html){	
-				$("#card_title").html("");
 				$("#content_page").html(html);
 			},
 			error : function() {
 			}
 		});
 	},
-	"sangpum_order_page" : function(num){
+	"sangpum_order_page" : function(id, num){
 		$.ajax({
 			headers: { "X-CSRFToken": token },
 			url : sangpum_order_page,
 			type : 'post',
-			data : {'msg' : num},
+			data : {
+				'id' : id,
+				'num' : num},
 			dataType : 'html',
 			success : function(html){	
-				$("#card_title").html("");
 				$("#content_page").html(html);
 			},
 			error : function() {
 			}
 		});
-	}
+	},
+	"order_cus_addr" : function(radio){
+		$.ajax({
+			headers: { "X-CSRFToken": token },
+			url : '/cusaddr',
+			type : 'post',
+			data : {'radio' : radio},
+			dataType : 'json',
+			success : function(json){	
+				$("#ord_cname").val(json['ord_cname'])
+				$("#ord_phone").val(json['ord_phone'])
+				$("#ord_addr").val(json['ord_addr'])
+			},
+			error : function() {
+			}
+		});
+	},
+	"sangpum_orderOk" : function(name, phone, addr, q, pid){
+		$.ajax({
+			headers: { "X-CSRFToken": token },
+			url : '/orderok',
+			type : 'post',
+			data : {
+				'name' : name,
+				'phone' : phone,
+				'addr' : addr,
+				'q' : q,
+				'pid' : pid
+			},
+			dataType : 'json',
+			success : function(json){
+				$("#content_page").html("<h2>주문 되었습니다.</h2>");
+			},
+			error : function() {
+			}
+		});
+	},
 };
 const ajaxJs = {
 	"ajax_order_list" : function(select, page){
@@ -189,7 +217,6 @@ const ajaxJs = {
 				},
 			dataType : 'html',
 			success : function(html){	
-				$("#card_title").html("주문 목록");
 				$("#content_page").html(html);
 			},
 			error : function() {
@@ -217,7 +244,6 @@ const ajaxJs = {
 			data : {'page' : page},
 			dataTpye : 'html',
 			success : function(html){
-				$("#card_title").html("재고 목록");
 				$("#content_page").html(html);
 			},
 			error : function() {
@@ -278,7 +304,6 @@ const ajaxJs = {
 			type : 'get',
 			dataTpye : 'html',
 			success : function(html){
-				$("#card_title").html("재고 추가");
 				$("#content_page").html(html);
 			},
 			error : function() {

@@ -7,7 +7,7 @@
 	<div class='text-right'>
 		<select class='col-2 custom-select custom-select-sm mb-4'
 			name='ord_state' id='ord_state'>
-			<option value='all' selected='selected'>직업선택</option>
+			<option value='all' selected='selected'>작업선택</option>
 			<option value='0'>주문</option>
 			<option value='1'>배송</option>
 			<option value='2'>완료</option>
@@ -33,7 +33,7 @@
 				{% if order_data %} {% for o in order_data %}
 				<tr name="orders" id="order_{{o.id}}">
 					<td scope='row'>{{o.id}}</td>
-					<td>{{o.ord_cname}}</td>
+					<td>{{o.ord_cid.cus_mail}}</td>
 					<td>{{o.ord_pid.st_name}}[{{o.ord_quantity|intcomma }}개]</td>
 					<td>{{ostate|dict_key:o.state }}</td>
 				</tr>

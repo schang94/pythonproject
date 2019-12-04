@@ -21,16 +21,18 @@
 							<tr>
 								<td scope='row'>구매수량</td>
 								<td>
-									<form method="post">{% csrf_token %}
-										<input type="number" id="" name="quantity" value="1">
+									<form action="#" method="post">{% csrf_token %}
+										<input type="number" id="sd_quantity" name="quantity" value="1" >
+										<input type="hidden" id="sd_price"value="{{sangpum_data.st_price}}" >
+										<input type="hidden" id="sd_id"value="{{sangpum_data.id}}" >
 									</form>
 								</td>
 							</tr>
-							<tr><td class="text-right" colspan="2">총 상품금액(수량) : {{sangpum_data.st_price|intcomma }}원(1개)</td></tr>
+							<tr><td id="sd_total" class="text-right" colspan="2">총 상품금액(수량) : {{sangpum_data.st_price|intcomma }}원(1개)</td></tr>
 						</tbody>
 					</table>
 					<div class="text-center">
-						<a href="javascript:ajaxGuset.sangpum_order_page('2')" class="btn btn-secondary btn-lg">구매하기</a>
+						<a id='sd_submit' href="javascript:ajaxGuset.sangpum_order_page('{{sangpum_data.id}}', '1')" class="btn btn-secondary btn-lg">구매하기</a>
 					</div>
 				</td>
 			</tr>

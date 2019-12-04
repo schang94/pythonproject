@@ -20,7 +20,7 @@
 		</thead>
 			<tbody class="text-center">
 				<tr>
-					<td scope="row"></td>
+					<td scope="row">{{sangpum_data.st_name}}</td>
 					<td>{{ sangpum_data.st_price|intcomma }}원[{{quantity}}개]</td>
 					<td> {{ sangpum_data.st_price|mul:quantity|intcomma }}원</td>
 			</tbody>
@@ -29,35 +29,45 @@
 		<form method="post">
 		<table class="table">
 			<colgroup>
-				<col width='30%' />
-				<col width='70%' />
+				<col width='20%' />
+				<col width='80%' />
 			</colgroup>
 			<tbody class="text-left">
 				<tr>
 					<td scope="row">배송지 선택</th>
 					<td>
-						<input type="radio" name="ship" value="basis" checked="checked"/> 기본배송지
-						<input type="radio" name="ship" value="recent" /> 최근배송지
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" id="ship_bsic" name="op_ship" value="basic" checked="checked"/>
+							<label class="form-check-label" for="ship_bsic">기본배송지</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" id="ship_recent" name="op_ship" value="recent" />
+							<label class="form-check-label" for="ship_recent">최근배송지</label>
+						</div>
+						 
 					</td>
 				</tr>
 				<tr>
-					<td scope="row">받는 사람</td>
-					<td></td>
+					<td scope="row"><label for="ord_cname">받는 사람</label></td>
+					<td><input class="form-control" type="text" name="ord_cname" id="ord_cname" value="{{cus_data.cus_name}}"></td>
 				</tr>
 				<tr>
-					<td scope="row">연락처</td>
-					<td></td>
+					<td scope="row"><label for="ord_phone">연락처</label></td>
+					<td><input class="form-control" type="text" name="ord_phone" id="ord_phone" value="{{cus_data.cus_phone}}"></td>
 				</tr>
 				<tr>
-					<td scope="row">받는 주소</td>
-					<td></td>
+					<td scope="row"><label for="ord_addr">받는 주소</label></td>
+					<td><input class="form-control" type="text" name="ord_addr" id="ord_addr" value="{{cus_data.cus_addr}}"></td>
 				</tr>
 				<tr>
-					<td scope="row">받는 사람</th>
-					<td>{{ order_data.ord_cname }}</td>
+					<td scope="row" colspan="2" class="text-center">
+						<input id="sop_submit" class="btn btn-secondary btn-lg" type="button" value="주문">
+					</th>
 				</tr>
 			</tbody>
 		</table>
+		<input type="hidden" id="sop_quantity" value="{{ quantity }}">
+		<input type="hidden" id="sop_pid" value="{{ sangpum_data.id }}">
 		</form>
 	</div>
 </div>
