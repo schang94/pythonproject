@@ -9,6 +9,7 @@
 <script src="/static/js/MouseEvent.js" ></script>
 <script>
 var url_order_list = "{% url 'order_list' %}";
+var url_order_list_search = "{% url 'order_list_search' %}";
 var url_order_detail = "{% url 'order_detail' %}";
 var url_stock_list = "{% url 'stock_list' %}";
 var url_stock_detail = "{% url 'stock_detail' %}";
@@ -18,7 +19,8 @@ var url_stock_insert_page = "{% url 'stock_insert_page' %}";
 var url_stock_insert_ok = "{% url 'stock_insert_ok' %}";
 var url_sangpum_list = "{% url 'sanpum_list' %}";
 var url_sangpum_detail = "{% url 'sangpum_detail' %}"
-var sangpum_order_page = "{% url 'sangpum_order_page' %}"
+var url_sangpum_order_page = "{% url 'sangpum_order_page' %}"
+var url_order_change = "{% url 'order_change' %}"
 var token = '{{csrf_token}}';
 </script>
 

@@ -1,5 +1,5 @@
 const ajaxLogin = {
-	"home": function(){
+	"home": function(){ // 홈으로 이동하기
 		$.ajax({
 			url : '/',
 			type : 'get',
@@ -7,13 +7,18 @@ const ajaxLogin = {
 			success : function(html){
 				ajaxLogin.logindiv();
 				ajaxLogin.loginnav();
-				$("#content_page").html("<h2>환영합니다.</h2>");
+				var str = '<div class="card-header bg-dark text-white">';
+				str += '<h4 class="my-0 font-weight-normal">홈</h4></div>';
+				str += '<div class="card-body" >';
+				str += '<h2>환영합니다.</h2></div>';
+				
+				$("#content_page").html(str);
 			},
 			error : function() {
 			}
 		});
 	},
-	"sign" : function(){
+	"sign" : function(){ // 회원가입 페이지
 		$.ajax({
 			url : '/sign',
 			type : 'get',
@@ -25,7 +30,7 @@ const ajaxLogin = {
 			}
 		});
 	},
-	"signOk" : function(mail, passwd, name, phone, addr){
+	"signOk" : function(mail, passwd, name, phone, addr){ // 회원가입
 		$.ajax({
 			headers: { "X-CSRFToken": token },
 			url : '/signok',
@@ -45,7 +50,7 @@ const ajaxLogin = {
 			}
 		});
 	},
-	"login" : function(){
+	"login" : function(){ // 로그인 페이지
 		$.ajax({
 			url : '/login',
 			type : 'get',
@@ -57,7 +62,7 @@ const ajaxLogin = {
 			}
 		});
 	},
-	"loginnav" : function(){
+	"loginnav" : function(){ // 목록(홈, 상품, 주문,재고)
 		$.ajax({
 			url : '/loadnav',
 			type : 'get',
@@ -69,7 +74,7 @@ const ajaxLogin = {
 			}
 		});
 	},
-	"logindiv" : function(){
+	"logindiv" : function(){ // 목록(로그인,로그아웃,회원가입)
 		$.ajax({
 			url : '/loaddiv',
 			type : 'get',
@@ -81,7 +86,7 @@ const ajaxLogin = {
 			}
 		});
 	},
-	"loginOk" : function(mail, passwd){
+	"loginOk" : function(mail, passwd){ // 로그인
 		$.ajax({
 			headers: { "X-CSRFToken": token },
 			url : '/loginok',
@@ -92,13 +97,13 @@ const ajaxLogin = {
 			},
 			dataType : 'json',
 			success : function(json){
-				if(json['login_chk'] == 'True'){
-					if(json['authority']){
+				if(json['login_chk'] == 'True'){ // 로그인 성공
+					if(json['authority']){ // 관리자 일 떄
 						ajaxLogin.loginnav();
 					}
 					ajaxLogin.logindiv();
 					$("#content_page").html("<h2>로그인을 성공했습니다.</h2>");
-				}else if(json['login_chk'] == 'False'){
+				}else if(json['login_chk'] == 'False'){ // 로그인 실패
 					$("#content_page").html("<h2>로그인을 실패했습니다.</h2>");
 				}
 				
@@ -107,7 +112,7 @@ const ajaxLogin = {
 			}
 		});
 	},
-	"logout" : function(){
+	"logout" : function(){ // 로그아웃
 		$.ajax({
 			url : '/logout',
 			type : 'get',
@@ -124,12 +129,11 @@ const ajaxLogin = {
 };
 
 const ajaxGuset = {
-	"sangpum_list" : function(select, page){
+	"sangpum_list" : function(page){ // 상품리스트
 		$.ajax({
 			url : url_sangpum_list,
 			type : 'get',
 			data : {
-				'msg' : select,
 				'page' : page
 				},
 			dataType : 'html',
@@ -140,7 +144,7 @@ const ajaxGuset = {
 			}
 		});
 	},
-	"sangpum_detail" : function(num){
+	"sangpum_detail" : function(num){ // 상품 상세보기
 		$.ajax({
 			url : url_sangpum_detail ,
 			type : 'get',
@@ -153,10 +157,19 @@ const ajaxGuset = {
 			}
 		});
 	},
-	"sangpum_order_page" : function(id, num){
+	"sangpum_order_page" : function(id, num){ // 상품 주문 페이지
+		if(num < 1){ // 0이하의 수를 입력했을 때
+			alert('구매수량이 올바르지 않습니다.');
+			return;
+		}
+		if($("#sd_quantity_total").val() - num < 0){ // 재고량 보다 많이 주문 했을 때
+			alert('재고량이 부족합니다.');
+			return;
+		}
+		
 		$.ajax({
 			headers: { "X-CSRFToken": token },
-			url : sangpum_order_page,
+			url : url_sangpum_order_page,
 			type : 'post',
 			data : {
 				'id' : id,
@@ -169,7 +182,7 @@ const ajaxGuset = {
 			}
 		});
 	},
-	"order_cus_addr" : function(radio){
+	"order_cus_addr" : function(radio){ // 주문 페이지에서 배송 정보 불러오기
 		$.ajax({
 			headers: { "X-CSRFToken": token },
 			url : '/cusaddr',
@@ -185,7 +198,8 @@ const ajaxGuset = {
 			}
 		});
 	},
-	"sangpum_orderOk" : function(name, phone, addr, q, pid){
+	"sangpum_orderOk" : function(name, phone, addr, q, pid){ // 상품 주문
+
 		$.ajax({
 			headers: { "X-CSRFToken": token },
 			url : '/orderok',
@@ -197,8 +211,8 @@ const ajaxGuset = {
 				'q' : q,
 				'pid' : pid
 			},
-			dataType : 'json',
-			success : function(json){
+			dataType : 'html',
+			success : function(html){
 				$("#content_page").html("<h2>주문 되었습니다.</h2>");
 			},
 			error : function() {
@@ -207,7 +221,7 @@ const ajaxGuset = {
 	},
 };
 const ajaxJs = {
-	"ajax_order_list" : function(select, page){
+	"ajax_order_list" : function(select, page){ // 주문 관리 리스트
 		$.ajax({
 			url : url_order_list,
 			type : 'get',
@@ -218,12 +232,35 @@ const ajaxJs = {
 			dataType : 'html',
 			success : function(html){	
 				$("#content_page").html(html);
+				$("#ord_state option[value=" + select +"]").attr("selected", "ture"); // select의 selected 설정
+
 			},
 			error : function() {
 			}
 		});
 	},
-	"ajax_order_detail" : function(num) {
+	"ajax_order_list_search" : function(select, page, type, value){ // 주문 관리 리스트 검색
+		$.ajax({
+			url : url_order_list_search,
+			type : 'get',
+			data : {
+				'msg' : select,
+				'page' : page,
+				'type' : type,
+				'value' : value
+				},
+			dataType : 'html',
+			success : function(html){	
+				$("#content_page").html(html);
+				$("#os_state option[value=" + select +"]").attr("selected", "ture"); // select의 selected 설정
+				$("#s_type option[value=" + type +"]").attr("selected", "ture"); // select의 selected 설정
+				$("#s_value").val(value);
+			},
+			error : function() {
+			}
+		});
+	},
+	"ajax_order_detail" : function(num) { // 주문 관리 상세보기
 		$.ajax({
 			url : url_order_detail ,
 			type : 'get',
@@ -237,7 +274,7 @@ const ajaxJs = {
 			}
 		});
 	},
-	"ajax_stock_list" : function(page) {
+	"ajax_stock_list" : function(page) { // 재고 관리 리스트
 		$.ajax({
 			url : url_stock_list ,
 			type : 'get',
@@ -250,7 +287,7 @@ const ajaxJs = {
 			}
 		});
 	},
-	"ajax_stock_detail" : function(num) {
+	"ajax_stock_detail" : function(num) { // 재고 관리 상세보기
 		$.ajax({
 			url : url_stock_detail,
 			type : 'get',
@@ -264,7 +301,7 @@ const ajaxJs = {
 			}
 		});
 	},
-	"ajax_stock_modify" : function(num) {
+	"ajax_stock_modify" : function(num) { // 재고 관리 수정 페이지
 		$.ajax({
 			url : url_stock_modify_page,
 			type : 'get',
@@ -278,7 +315,7 @@ const ajaxJs = {
 			}
 		});
 	},
-	"ajax_stock_modifyOk" : function(id, name, quantity, price) {
+	"ajax_stock_modifyOk" : function(id, name, quantity, price) { // 재고 관리 수정
 		$.ajax({
 			headers: { "X-CSRFToken": token },
 			url : url_stock_modify_ok ,
@@ -291,14 +328,14 @@ const ajaxJs = {
 			},
 			dataTpye : 'text',
 			success : function(text){
-				ajaxJs.ajax_stock_list(url_stock_list, $("#now_page").val());
-				ajaxJs.ajax_stock_detail(id, url_stock_detail);
+				ajaxJs.ajax_stock_list($("#now_page").val());
+				ajaxJs.ajax_stock_detail(id);
 			},
 			error : function() {
 			}
 		});
 	},
-	"ajax_stock_insert_page" : function(){
+	"ajax_stock_insert_page" : function(){ // 재고 관리 추가 페이지
 		$.ajax({
 			url : url_stock_insert_page ,
 			type : 'get',
@@ -310,7 +347,7 @@ const ajaxJs = {
 			}
 		});
 	},
-	"ajax_stock_insertOk" : function(name, quantity, price) {
+	"ajax_stock_insertOk" : function(name, quantity, price) { // 재고 관리 추가
 		$.ajax({
 			url : url_stock_insert_ok ,
 			type : 'get',

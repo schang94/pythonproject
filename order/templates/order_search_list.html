@@ -6,7 +6,7 @@
 <div class="card-body" >
 	<div class='text-right'>
 		<select class='col-2 custom-select custom-select-sm mb-4'
-			name='ord_state' id='ord_state'>
+			name='os_state' id='os_state'>
 			<option value='all'>전체</option>
 			<option value='0'>주문</option>
 			<option value='1'>배송</option>
@@ -49,12 +49,12 @@
 		</table>
 		<div>
 		{% if order_data.has_previous %}
-			<a class="btn btn-light" href="javascript:ajaxJs.ajax_order_list('{{ st }}','{{ order_data.previous_page_number }}')">&laquo;</a>
+			<a class="btn btn-light" href="javascript:ajaxJs.ajax_order_list_search('{{ st.st }}','{{ order_data.previous_page_number }}', '{{ st.type }}', '{{ st.value }}')">&laquo;</a>
 		{% else %}
 			<a class="btn btn-light disabled">&laquo;</a>
 		{% endif %}
 		{% if order_data.number > 3 %}
-			<a class="btn btn-light" href="javascript:ajaxJs.ajax_order_list('{{ st }}','1')"> 1 </a>
+			<a class="btn btn-light" href="javascript:ajaxJs.ajax_order_list_search('{{ st.st }}','1', '{{ st.type }}', '{{ st.value }}')"> 1 </a>
 			<a class="btn btn-light disabled">...</a>
 		{% endif %}
 		{% for p in page_range %}
@@ -62,16 +62,16 @@
 				{% if p == order_data.number %}
 					<a class="btn btn-light disabled">{{p}}</a>
 				{% elif p != order_data.number %}
-					<a class="btn btn-light" href="javascript:ajaxJs.ajax_order_list('{{ st }}','{{p}}')">{{p}}</a>
+					<a class="btn btn-light" href="javascript:ajaxJs.ajax_order_list_search('{{ st.st }}','{{p}}', '{{ st.type }}', '{{ st.value }}')">{{p}}</a>
 				{% endif%}
 			{% endif %}
 		{% endfor %}
 		{% if order_data.number < max_index|add:'-2' %}
 			<a class="btn btn-light disabled">...</a>
-			<a class="btn btn-light" href="javascript:ajaxJs.ajax_order_list('{{ st }}','{{max_index}}')"> {{max_index}} </a>
+			<a class="btn btn-light" href="javascript:ajaxJs.ajaxJs.ajax_order_list_search('{{ st.st }}','{{max_index}}', '{{ st.type }}', '{{ st.value }}')"> {{max_index}} </a>
 		{% endif %}
 		{% if order_data.has_next  %}
-			<a class="btn btn-light" href="javascript:ajaxJs.ajax_order_list('{{ st }}','{{ order_data.next_page_number }}')">&raquo;</a>
+			<a class="btn btn-light" href="javascript:ajaxJs.ajaxJs.ajax_order_list_search('{{ st.st }}','{{ order_data.next_page_number }}', '{{ st.type }}', '{{ st.value }}')">&raquo;</a>
 		{% else %}
 			<a class="btn btn-light disabled">&raquo;</a>
 		{% endif %}
@@ -80,6 +80,8 @@
 	<form name="ord_frm">
 		<input type="hidden" name="pre_order_detail" id="pre_order_detail" value="">
 		<input type="hidden" name="now_page" id="now_page" value="{{ order_data.number }}">
+		<input type="hidden" name="os_type" id="os_type" value="{{ st.type }}">
+		<input type="hidden" name="os_value" id="os_value" value="{{ st.value }}">
 	</form>
 	<div class="nav justify-content-center">
 		<form class="form-inline text-center" method="post">{%csrf_token%}

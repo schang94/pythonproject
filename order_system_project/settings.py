@@ -25,7 +25,7 @@ SECRET_KEY = 'tmo3qo2z-4oo!)aj4#mlg+-!g(u#fi638-82*3&aa)^y(j+@w&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.0.24']
 
 
 # Application definition
@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'order',
-    'django_js_reverse',
     'mathfilters',
 ]
 

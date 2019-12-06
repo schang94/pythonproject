@@ -21,10 +21,11 @@
 							<tr>
 								<td scope='row'>구매수량</td>
 								<td>
-									<form action="#" method="post">{% csrf_token %}
+									<form action="#">{% csrf_token %}
 										<input type="number" id="sd_quantity" name="quantity" value="1" >
-										<input type="hidden" id="sd_price"value="{{sangpum_data.st_price}}" >
-										<input type="hidden" id="sd_id"value="{{sangpum_data.id}}" >
+										<input type="hidden" id="sd_price" value="{{sangpum_data.st_price}}" >
+										<input type="hidden" id="sd_id" value="{{sangpum_data.id}}" >
+										<input type="hidden" id="sd_quantity_total" value="{{sangpum_data.st_quantity}}" >
 									</form>
 								</td>
 							</tr>
