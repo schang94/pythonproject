@@ -1,4 +1,5 @@
 {% load humanize %}
+{% load staticfiles %}
 <div class='table-responsive-md' id='page_table'>
 	<table class='table'>
 		<colgroup>
@@ -7,7 +8,9 @@
 		</colgroup>
 		<tbody>
 			<tr>
-				<td scope='row'></td>
+				<td scope='row'>
+					<img src="{% static 'img/'|add:sangpum_data.st_img.name %}" alt="{{sangpum_data.st_img.name}}" style="width:70%" class="rounded mx-auto d-block">
+				</td>
 				<td>
 					<table class='table'>
 						<colgroup>

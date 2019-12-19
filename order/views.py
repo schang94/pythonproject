@@ -5,6 +5,7 @@ import json
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.urls.base import reverse
 from datetime import datetime
+from order.forms import DocumentForm
 
 # Create your views here.
 def MainFunc(request): # 메인 페이지로 이동
@@ -65,7 +66,7 @@ def SangpumFunc(request): # 상품 리스트
     sdatas = Stock.objects.all().order_by('id')
     
     total_len = len(sdatas) # 전체 목록 갯수
-    paginator = Paginator(sdatas, 5)
+    paginator = Paginator(sdatas, 25)
     
     try:
         page = request.GET.get('page')
@@ -171,6 +172,7 @@ def SangpumOrderOkFunc(request): # 주문하기
     return HttpResponseRedirect("/")
     
 def OrderList(request): # 주문 관리 페이지 리스트
+        
     st = request.GET['msg']
     
     if st == 'all': # 전체 목록으로 선택했을 떄
@@ -325,29 +327,53 @@ def StockModify(request): # 재고 수정 페이지
 
     return render(request, 'stock_modify.html', {'stock_data' : sdata})
 
-def StockModifyOk(request): # 재고 수정하기
-    id = request.POST['id']
-    name = request.POST['name']
-    quantity = request.POST['quantity']
-    price = request.POST['price']
-    
-    sdata = Stock.objects.get(id = id)
-    sdata.st_name = name
-    sdata.st_quantity = quantity
-    sdata.st_price = price
-    sdata.save()
+def StockDelete(request): # 재고 삭제
+    num = request.POST['id']
 
+    sdata = Stock.objects.get(id = num)
+    sdata.delete()
+    
     return HttpResponse('True')
 
+def StockModifyOk(request): # 재고 수정하기
+    id = request.POST['id']
+    name = request.POST.get('st_name','')
+    quantity = request.POST.get('st_quantity',0)
+    price = request.POST.get('st_price',0)
+    img = request.FILES.get('st_img','')
+    
+    sdata = Stock.objects.get(id = id)
+    if img == "":
+        sdata.st_name = name
+        sdata.st_quantity = quantity
+        sdata.st_price = price
+    else:
+        sdata.st_name = name
+        sdata.st_quantity = quantity
+        sdata.st_price = price
+        sdata.st_img = img
+
+    sdata.save()
+
+    return HttpResponse(id)
+
 def StockInsert(request): # 재고 추가하기 페이지
-    return render(request, 'stock_insert.html')
+    form = DocumentForm()
+    return render(request, 'stock_insert.html', {'form':form})
 
 def StockInsertOk(request): # 재고 추가하기
-    Stock(
-        st_name = request.GET['name'],
-        st_quantity = request.GET['quantity'],
-        st_price = request.GET['price']
-        ).save()
-        
+    form = DocumentForm(request.POST, request.FILES)
     
+    if form.is_valid():
+        form.save()
+
+    else:
+        print('bb')
+#     Stock(
+#         st_name = request.POST['name'],
+#         st_quantity = request.POST['quantity'],
+#         st_price = request.POST['price'],
+#         st_img = request.POST['img']
+#         ).save()
+        
     return HttpResponse(reverse('stock_list'))

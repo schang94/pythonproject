@@ -59,38 +59,62 @@ $(document).ready(function(){
 		}
 	});
 	// 상품 상세보기 페이지
-	$(document).on("click","tr[name='sangpums']",function(){
+	$(document).on("click","div[name='sangpums']",function(){
 		var num = $(this).attr("id").replace("sangpum_","");
 		ajaxGuset.sangpum_detail(num);
 	});
 	// 수정하기 페이지가는 이벤트
 	$(document).on("click","button[name='btn_st_modify']",function(){
-		var num = $(this).attr("id").replace("stock_","");
+		var num = $(this).attr("id").replace("stock_mo_","");
 		ajaxJs.ajax_stock_modify(num);
 	});
+	// 재고 관리 물품 수정페이지 이미지 미리보기 이벤트
+	$(document).on("change","form[name=st_modify_frm] input[name=st_img], form[name=st_insert_frm] input[name=st_img]",function(e){
+		var files = e.target.files;
+		var filesArr = Array.prototype.slice.call(files);
+		
+		filesArr.forEach(function(f){
+			if(!f.type.match("image.*")) {
+				alert('이미지 파일만 가능합니다.')
+				return;
+			}
+			
+			sel_file = f;
+			
+			var reader = new FileReader();
+			reader.onload = function(r) {
+				$("img[name=st_img_pretypifys]").attr("src", r.target.result);
+			}
+			reader.readAsDataURL(f)
+		});
+	});
+	// 재고관리 물품 삭제하는 이벤트
+	$(document).on("click","button[name='btn_st_delete']",function(){
+		var num = $(this).attr("id").replace("stock_de_","");
+		ajaxJs.ajax_stock_delete(num);
+	});
 	// 수정하기에서 취소 버튼 이벤트
-	$(document).on("click","button[name='btn_st_modify_ca']",function(){
+	$(document).on("click","button[name='btn_st_modify_ca']",function(e){
+		e.preventDefault();
 		var num = $("form[name=st_modify_frm] input[name=id]").val();
 		ajaxJs.ajax_stock_detail(num);
 	});
 	// 수정하기에서 수정하기 버튼 이벤트
-	$(document).on("click","button[name='btn_st_modify_ok']",function(){
-		var id = $("form[name=st_modify_frm] input[name=id]").val();
-		var name = $("form[name=st_modify_frm] input[name=st_name]").val();
-		var quantity = $("form[name=st_modify_frm] input[name=st_quantity]").val();
-		var price = $("form[name=st_modify_frm] input[name=st_price]").val();
-		ajaxJs.ajax_stock_modifyOk(id, name, quantity, price);
+	$(document).on("click","button[name='btn_st_modify_ok']",function(e){
+		e.preventDefault();
+		ajaxJs.ajax_stock_modifyOk();
 	});
 	// 재고 추가하기
 	$(document).on("click","button[name='btn_st_insert_ok']",function(){
 		var name = $("form[name=st_insert_frm] input[name=st_name]").val();
 		var quantity = $("form[name=st_insert_frm] input[name=st_quantity]").val();
 		var price = $("form[name=st_insert_frm] input[name=st_price]").val();
+		var file = $("form[name=st_insert_frm] input[name=st_img]").val();
 		if(name == "" || quantity == "" || price == ""){
 			alert('빈칸이 있습니다.')
 			return;
 		}
-		ajaxJs.ajax_stock_insertOk(name, quantity, price);
+		ajaxJs.ajax_stock_insertOk(name, quantity, price, file);
 	});
 	// 기본주소지, 최근 주소지
 	$(document).on("change","input[name='op_ship']",function(){
@@ -172,3 +196,13 @@ $(document).ready(function(){
 		ajaxJs.ajax_order_list_search('all', '1', s_type, s_value)
 	});
 });
+
+function getUrlParams() {
+    var params = {};
+    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+    return params;
+}
+function removeLocationHash(){
+    var noHashURL = window.location.href.replace(/#.*$/, '');
+    window.history.replaceState('', document.title, noHashURL) 
+}

@@ -13,7 +13,7 @@ class Stock(models.Model):
     st_name = models.CharField(max_length = 50)
     st_quantity = models.IntegerField()
     st_price = models.IntegerField()
-    
+    st_img = models.FileField(upload_to='%Y/%m/%d', blank=True)
     def __str__(self):
         return self.st_name
 

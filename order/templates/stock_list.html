@@ -4,7 +4,7 @@
 </div>
 <div class="card-body" >
 	<div class='table-responsive-md' id='page_table'>
-		<table class='table table-hover'>
+		<table class='table'>
 			<colgroup>
 				<col width='10%' />
 				<col width='50%' />
@@ -22,7 +22,7 @@
 			<tbody id='table_orderList'>
 				{% if stock_data %}
 					{% for s in stock_data %}
-					<tr name="stocks" id="stock_{{s.id}}">
+					<tr name="stocks" id="stock_{{s.id}}" style="cursor:pointer">
 						<td scope='row'>{{s.id}}</td>
 						<td>{{s.st_name}}</td>
 						<td>{{s.st_quantity|intcomma}}개</td>

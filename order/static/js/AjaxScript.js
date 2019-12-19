@@ -199,7 +199,6 @@ const ajaxGuset = {
 		});
 	},
 	"sangpum_orderOk" : function(name, phone, addr, q, pid){ // 상품 주문
-
 		$.ajax({
 			headers: { "X-CSRFToken": token },
 			url : '/orderok',
@@ -222,6 +221,8 @@ const ajaxGuset = {
 };
 const ajaxJs = {
 	"ajax_order_list" : function(select, page){ // 주문 관리 리스트
+//		url = "?page=" + page + "&msg=" + select;
+//		history.pushState(null, null, url);
 		$.ajax({
 			url : url_order_list,
 			type : 'get',
@@ -315,21 +316,36 @@ const ajaxJs = {
 			}
 		});
 	},
-	"ajax_stock_modifyOk" : function(id, name, quantity, price) { // 재고 관리 수정
+	"ajax_stock_modifyOk" : function() { // 재고 관리 수정
+		var form = $('form[name=st_modify_frm]')[0];
+		var formData = new FormData(form);
 		$.ajax({
 			headers: { "X-CSRFToken": token },
 			url : url_stock_modify_ok ,
 			type : 'post',
+			data : formData,
+			dataTpye : 'text',
+			contentType: false,
+		    processData: false,
+			success : function(text){
+				ajaxJs.ajax_stock_list($("#now_page").val());
+				ajaxJs.ajax_stock_detail(text);
+			},
+			error : function() {
+			}
+		});
+	},
+	"ajax_stock_delete" : function(id) { // 재고 관리 수정
+		$.ajax({
+			headers: { "X-CSRFToken": token },
+			url : url_stock_delete ,
+			type : 'post',
 			data : {
 				'id' : id,
-				'name' : name,
-				'quantity' : quantity,
-				'price' : price
 			},
 			dataTpye : 'text',
 			success : function(text){
 				ajaxJs.ajax_stock_list($("#now_page").val());
-				ajaxJs.ajax_stock_detail(id);
 			},
 			error : function() {
 			}
@@ -347,20 +363,23 @@ const ajaxJs = {
 			}
 		});
 	},
-	"ajax_stock_insertOk" : function(name, quantity, price) { // 재고 관리 추가
+	"ajax_stock_insertOk" : function(name, quantity, price, img) { // 재고 관리 추가
+		var form = $('form[name=st_insert_frm]')[0];
+		var formData = new FormData(form);
 		$.ajax({
+			headers: { "X-CSRFToken": token },
 			url : url_stock_insert_ok ,
-			type : 'get',
-			data : {
-				'name' : name,
-				'quantity' : quantity,
-				'price' : price
-			},
+			type : 'post',
+			enctype : "multipart/form-data",
+			data : formData,
 			dataTpye : 'text',
+			contentType: false,
+		    processData: false,
 			success : function(text){
 				ajaxJs.ajax_stock_list(text, '1')
 			},
-			error : function() {
+			error : function(e) {
+				alert(e);
 			}
 		});
 	},

@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,14 +6,15 @@
 <title>Home</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="/static/js/AjaxScript.js" ></script>
-<script src="/static/js/MouseEvent.js" ></script>
+<script src="{% static 'js/AjaxScript.js' %}" ></script>
+<script src="{% static 'js/MouseEvent.js' %}" ></script>
 <script>
 var url_order_list = "{% url 'order_list' %}";
 var url_order_list_search = "{% url 'order_list_search' %}";
 var url_order_detail = "{% url 'order_detail' %}";
 var url_stock_list = "{% url 'stock_list' %}";
 var url_stock_detail = "{% url 'stock_detail' %}";
+var url_stock_delete = "{% url 'stock_delete' %}";
 var url_stock_modify_page = "{% url 'stock_modify_page' %}";
 var url_stock_modify_ok = "{% url 'stock_modify_ok' %}";
 var url_stock_insert_page = "{% url 'stock_insert_page' %}";
